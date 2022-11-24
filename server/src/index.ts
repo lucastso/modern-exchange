@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import Transaction from "./models/Transaction";
@@ -26,12 +29,8 @@ app.post("/user", async (req: Request, res: Response) => {
     res.json(createdUser);
 });
 
-mongoose
-    .connect(
-        "mongodb+srv://exchange:dgl4ebzM1MjBVOeW@cluster0.rfvgcal.mongodb.net/?retryWrites=true&w=majority"
-    )
-    .then(() => {
-        console.log(`listing on port ${PORT}`);
+mongoose.connect(process.env.MONGO_URL!).then(() => {
+    console.log(`listing on port ${PORT}`);
 
-        app.listen(PORT);
-    });
+    app.listen(PORT);
+});
