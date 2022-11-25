@@ -17,6 +17,7 @@ const User = new Schema(
         },
         password: { type: String, required: true },
         accountId: { type: Schema.Types.ObjectId, ref: "Account" },
+        pix: { type: String, unique: true }
     },
     { timestamps: { createdAt: "created_at" } }
 );
