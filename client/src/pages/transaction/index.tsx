@@ -1,5 +1,6 @@
-import React, {useState} from "react";
-import CurrencyFormat from 'react-currency-format';
+import React, { useState } from "react";
+import CurrencyFormat from "react-currency-format";
+import api from "../../config/axios";
 
 const Transaction = () => {
     const [transactionTo, setTransactionTo] = useState("");
@@ -7,34 +8,53 @@ const Transaction = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-    }
+        api.post("/transaction", {
+            debitedAccountId: "Fred",
+            creditedAccountId: transactionTo,
+            value: value,
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        setTransactionTo("");
+        setValue("");
+    };
 
-    return <section className="p-12 font-bold">
-        <form method="POST" onSubmit={handleSubmit} className="flex flex-col">
-            <label htmlFor="to">Para quem</label>
-            <input
-                type="text"
-                id="to"
-                className="border p-2 m-2"
-                value={transactionTo}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTransactionTo(e.target.value);
-                }}
-            />
-            <label htmlFor="value">Valor</label>
-            <CurrencyFormat
-                thousandSeparator={true}
-                id="value"
-                className="border p-2 m-2"
-                prefix={'R$'}
-                placeholder='R$0,00'
-                value={value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setValue(e.target.value);
-                }}
-            />
-        </form>
-    </section>;
+    return (
+        <section className="p-12 font-bold">
+            <form
+                method="POST"
+                onSubmit={handleSubmit}
+                className="flex flex-col"
+            >
+                <label htmlFor="to">Para quem</label>
+                <input
+                    type="text"
+                    id="to"
+                    className="border p-2 m-2"
+                    value={transactionTo}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setTransactionTo(e.target.value);
+                    }}
+                />
+                <label htmlFor="value">Valor</label>
+                <CurrencyFormat
+                    thousandSeparator={true}
+                    id="value"
+                    className="border p-2 m-2"
+                    prefix={"R$"}
+                    placeholder="R$0,00"
+                    value={value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setValue(e.target.value);
+                    }}
+                />
+            </form>
+        </section>
+    );
 };
 
 export default Transaction;
