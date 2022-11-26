@@ -15,9 +15,9 @@ const User = new Schema(
                     "O seu nome de usuário deve possuir mais de 4 caracteres",
             },
         },
-        password: { type: String, required: true },
+        password: { type: String, required: true, select: false },
         accountId: { type: Schema.Types.ObjectId, ref: "Account" },
-        pix: { type: String, unique: true }
+        pix: { type: String, unique: true },
     },
     { timestamps: { createdAt: "created_at" } }
 );
